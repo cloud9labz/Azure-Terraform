@@ -27,24 +27,6 @@ stages:
         - task: TerraformInstaller@1
           inputs:
             terraformVersion: 'v1.4.2'
-        - task: TerraformTaskV4@4
-          displayName: TerraformInit
-          inputs:
-            provider: 'azurerm'
-            command: 'init'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine'
-            backendServiceArm: 'Free Trial(1)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
-            backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
-            backendAzureRmStorageAccountName: 'c9labzstorageaccount'
-            backendAzureRmContainerName: 'c9labzterraformcontainer'
-            backendAzureRmKey: 'tf-azure.tfstate'
-            allowTelemetryCollection: false
-        - task: TerraformTaskV4@4
-          displayName: TerraformValidate
-          inputs:
-            provider: 'azurerm'
-            command: 'validate'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine'
-            allowTelemetryCollection: false
+        
         
         
