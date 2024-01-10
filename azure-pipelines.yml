@@ -44,9 +44,9 @@ stages:
             backendAzureRmStorageAccountName: 'c9labzstorageaccount'
             backendAzureRmContainerName: 'c9labzterraformcontainer'
             backendAzureRmKey: 'tf-azure.tfstate'
-  - stage: TerraformInitialize
+  - stage: TerraformValidate
     jobs:
-      - job: TerraformINIT
+      - job: TerraformValidate
         continueOnError: false
         steps:
         - task: TerraformTaskV4@4
