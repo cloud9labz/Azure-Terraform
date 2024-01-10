@@ -24,7 +24,7 @@ stages:
             targetPath: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine'
             artifact: 'Publish Artifacts'
             publishLocation: 'pipeline'
-stages:
+
   - stage: TerraformInitialize
     jobs:
       - job: TerraformINIT
@@ -44,7 +44,11 @@ stages:
             backendAzureRmStorageAccountName: 'c9labzstorageaccount'
             backendAzureRmContainerName: 'c9labzterraformcontainer'
             backendAzureRmKey: 'tf-azure.tfstate'
-
+  - stage: TerraformInitialize
+    jobs:
+      - job: TerraformINIT
+        continueOnError: false
+        steps:
         - task: TerraformTaskV4@4
           displayName: TerraformValidate
           inputs:
