@@ -13,9 +13,9 @@ variables:
 - group: TF-AZURE-CLOUD-ENV
 
 stages:
-  - stage: TerraformValidate
+  - stage: PublishArtifacts
     jobs:
-      - job: TerraformValidateJob
+      - job: PublishArti
         continueOnError: false
         steps:
         - task: PublishPipelineArtifact@1
@@ -24,6 +24,12 @@ stages:
             targetPath: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine'
             artifact: 'Publish Artifacts'
             publishLocation: 'pipeline'
+stages:
+  - stage: TerraformInitialize
+    jobs:
+      - job: TerraformINIT
+        continueOnError: false
+        steps:
         - task: TerraformInstaller@1
           inputs:
             terraformVersion: 'v1.4.2'
@@ -38,6 +44,12 @@ stages:
             backendAzureRmStorageAccountName: 'c9labzstorageaccount'
             backendAzureRmContainerName: 'c9labzterraformcontainer'
             backendAzureRmKey: 'tf-azure.tfstate'
+stages:
+  - stage: TerraformValidate
+    jobs:
+      - job: TerraformValidateJob
+        continueOnError: false
+        steps:
         - task: TerraformTaskV4@4
           displayName: TerraformValidate
           inputs:
