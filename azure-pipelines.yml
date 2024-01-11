@@ -49,9 +49,7 @@ stages:
       - job: TerraformValidate
         continueOnError: false
         steps:
-        - task: TerraformInstaller@1
-          inputs:
-            terraformVersion: 'v1.4.2'
+
         - task: TerraformTaskV4@4
           displayName: TerraformValidate
           inputs:
