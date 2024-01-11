@@ -1,11 +1,11 @@
 #Terraform Block
 
 terraform {
-  required_version = "v1.4.2"
+  required_version = ">=v1.4.2"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.50.0"
+      version = ">=3.50.0"
     }
 
     random = {
