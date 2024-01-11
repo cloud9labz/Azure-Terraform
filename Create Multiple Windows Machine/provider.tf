@@ -14,8 +14,13 @@ terraform {
     }
   }
 
+backend "azurerm" {
+  
+}
 
 }
+
+
 
 #Configure Azure Provider
 provider "azurerm" {
