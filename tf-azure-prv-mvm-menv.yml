@@ -25,7 +25,7 @@ stages:
       - deployment: deploy
         pool:
           vmImage: ubuntu-latest
-
+        environment: dev
         variables:
           - group: terraform-auto-provision-on-dev-environment 
     
@@ -71,7 +71,7 @@ stages:
       - deployment: deploy
         pool:
           vmImage: ubuntu-latest
-
+        environment: prd
         variables:
           - group: terraform-auto-provision-on-prd-environment 
     
