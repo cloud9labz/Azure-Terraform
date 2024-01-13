@@ -31,7 +31,7 @@ stages:
         environment: dev
         variables:
           - group: terraform-auto-provision-on-dev-environment
-      - job: Terraform Intsall
+      - job: TerraformIntsall
         continueOnError: false
         steps:
         - task: TerraformInstaller@1
@@ -81,7 +81,7 @@ stages:
         environment: prd
         variables:
           - group: terraform-auto-provision-on-prd-environment
-      - job: Terraform Intsall
+      - job: TerraformIntsall
         continueOnError: false
         steps:
           - task: TerraformInstaller@1
