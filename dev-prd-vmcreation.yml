@@ -34,38 +34,38 @@ stages:
       - job: Terraform Intsall
         continueOnError: false
         steps:
-          - task: TerraformInstaller@1
-            inputs:
-              terraformVersion: 'latest'
-          - task: TerraformTaskV4@4
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
-              backendServiceArm: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
-              backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
-              backendAzureRmStorageAccountName: 'c9labzstorageaccount'
-              backendAzureRmContainerName: 'c9labzterraformcontainer'
-              backendAzureRmKey: 'azure-vm-creation-menv.tfstate'
-          - task: TerraformTaskV4@4
-            inputs:
-              provider: 'azurerm'
-              command: 'validate'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+            backendServiceArm: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+            backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
+            backendAzureRmStorageAccountName: 'c9labzstorageaccount'
+            backendAzureRmContainerName: 'c9labzterraformcontainer'
+            backendAzureRmKey: 'azure-vm-creation-menv.tfstate'
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
 
-          - task: TerraformTaskV4@4
-            inputs:
-              provider: 'azurerm'
-              command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
-              environmentServiceNameAzureRM: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'plan'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+            environmentServiceNameAzureRM: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
           
-          - task: TerraformTaskV4@4
-            inputs:
-              provider: 'azurerm'
-              command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
-              environmentServiceNameAzureRM: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'apply'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+            environmentServiceNameAzureRM: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
             
 
 
