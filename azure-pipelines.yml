@@ -1,0 +1,56 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+- group: TF-AZURE-CLOUD-ENV
+
+stages:
+  - stage: PublishArtifacts
+    jobs:
+      - job: PublishArti
+        continueOnError: false
+        steps:
+        - task: PublishPipelineArtifact@1
+          displayName: PublishArtifacts
+          inputs:
+            targetPath: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine'
+            artifact: 'Publish Artifacts'
+            publishLocation: 'pipeline'
+
+  - stage: TerraformInitialize
+    jobs:
+      - job: TerraformINIT
+        continueOnError: false
+        steps:
+        - task: TerraformInstaller@1
+          inputs:
+            terraformVersion: 'latest'
+        - task: TerraformTaskV4@4
+          displayName: TerraformInit
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine'
+            backendServiceArm: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+            backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
+            backendAzureRmStorageAccountName: 'c9labzstorageaccount'
+            backendAzureRmContainerName: 'c9labzterraformcontainer'
+            backendAzureRmKey: 'tf-azure.tfstate'
+
+
+        - task: TerraformTaskV4@4
+          displayName: TerraformValidate
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine'
+        
+        

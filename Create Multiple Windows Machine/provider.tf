@@ -1,19 +1,22 @@
 #Terraform Block
 
 terraform {
-  required_version = "v1.4.2"
+  required_version = ">=v1.4.2"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.50.0"
+      version = ">=3.50.0"
     }
 
     random = {
       source  = "hashicorp/random"
-      version = "3.4.3"
+      version = "3.6.0"
     }
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 84771341b1f393015ad1bf72befd1ff24994c269
 backend "azurerm" {
   
 }
