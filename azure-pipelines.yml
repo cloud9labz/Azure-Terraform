@@ -4,88 +4,57 @@ trigger:
 stages:
 - stage: PublishArtifacts
   jobs:
-  - job: publishartifacts
+  - job: PublishArtifacts
     pool:
-      vmImage: ubuntu-latest
-    continueOnError: false
+      vmImage: 'ubuntu-latest'
     steps:
+    - checkout: self
+
+    # Your build and other steps go here...
+
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
-        artifact: 'aztf-publishartifacts'
+        artifact: 'TerraformArtifacts'
         publishLocation: 'pipeline'
 
-- stage: DEV
-  displayName: 'Create Windows VM on DEV Environment'
+- stage: TerraformApply
   dependsOn: PublishArtifacts
   jobs:
-  - job: TerraformInstallAndApplyDev
+  - job: TerraformApply
     pool:
-      vmImage: ubuntu-latest
-    variables:
-    - group: terraform-auto-provision-on-dev-environment
+      vmImage: 'ubuntu-latest'
     steps:
-    - task: TerraformInstaller@1
-      inputs:
-        terraformVersion: 'latest'
+    - checkout: self
+
     - task: TerraformTaskV1@0
       inputs:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
-        backendServiceArm: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
-        backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
-        backendAzureRmStorageAccountName: 'c9labzstorageaccount'
-        backendAzureRmContainerName: 'c9labzterraformcontainer'
-        backendAzureRmKey: 'azure-vm-creation-devenv.tfstate'
-     - task: TerraformTaskV1@0
-       inputs:
-         provider: 'azurerm'
-         command: 'validate'
-         workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        backendServiceArm: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'  # Replace with your actual backend service connection name
+        backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'  # Replace with your actual backend resource group name
+        backendAzureRmStorageAccountName: 'c9labzstorageaccount'  # Replace with your actual backend storage account name
+        backendAzureRmContainerName: 'c9labzterraformcontainer'  # Replace with your actual backend container name
+        backendAzureRmKey: 'azure-windows-vm-creation-devenv.tfstate'  # Replace with your actual backend key
+        # Other Terraform init configurations...
 
-     - task: TerraformTaskV1@0
-       inputs:
-         provider: 'azurerm'
-         command: 'plan'
-         workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
-         environmentServiceNameAzureRM: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+    - task: TerraformTaskV1@0
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+
+    - task: TerraformTaskV1@0
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        # Other Terraform plan configurations...
 
     - task: TerraformTaskV1@0
       inputs:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
-        environmentServiceNameAzureRM: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
-
-- stage: PRD
-  displayName: 'Create Windows VM on PRD Environment'
-  dependsOn:
-  - PublishArtifacts
-  - DEV
-  jobs:
-  - job: TerraformInstallAndApplyPRD
-    pool:
-      vmImage: ubuntu-latest
-    variables:
-    - group: terraform-auto-provision-on-prd-environment
-    steps:
-    - task: TerraformInstaller@1
-      inputs:
-        terraformVersion: 'latest'
-    - task: TerraformTaskV1@0
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
-        backendServiceArm: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
-        backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
-        backendAzureRmStorageAccountName: 'c9labzstorageaccount'
-        backendAzureRmContainerName: 'c9labzterraformcontainer'
-        backendAzureRmKey: 'azure-vm-creation-prdenv.tfstate'
-    - task: TerraformTaskV1@0
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
-        environmentServiceNameAzureRM: 'Free Trial(2)(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+        # Other Terraform apply configurations...
