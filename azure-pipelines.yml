@@ -24,6 +24,8 @@ stages:
   - job: TerraformApply
     pool:
       vmImage: 'ubuntu-latest'
+    variables:
+    - group: terraform-auto-provision-on-dev-environment
     steps:
     - checkout: self
 
