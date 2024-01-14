@@ -8,29 +8,7 @@ variable "node_count" {
 
 #Azure Subcription Details
 
-variable "az_subscription_id" {
-  description = "Azure Subscription Id"
-  type        = string
 
-}
-
-variable "az_tenant_id" {
-  description = "Azure Tenant Id"
-  type        = string
-
-}
-
-variable "az_client_id" {
-  description = "Azure Client Id"
-  type        = string
-
-}
-
-variable "az_client_secret" {
-  description = "Azure Client Secret"
-  type        = string
-
-}
 
 
 #Resource Group Details
