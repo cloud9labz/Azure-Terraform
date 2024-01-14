@@ -29,7 +29,6 @@ stages:
         displayName: terraforminitialize
         pool:
           vmimage: ubuntu-latest
-        environment: dev
         variables:
           - group: terraform-auto-provision-on-dev-environment
       - job: TerraformIntsall
