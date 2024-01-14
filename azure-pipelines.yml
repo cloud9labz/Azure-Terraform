@@ -1,4 +1,4 @@
-trigger:
+  trigger:
 - main
 
 stages:
@@ -9,6 +9,12 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - checkout: self
+  - job: TerraformPluginIntsall
+    continueOnError: false
+    steps: 
+    - task: TerraformInstaller@1
+      inputs: 
+        terraformVersion: 'latest'
 
     # Your build and other steps go here...
 
