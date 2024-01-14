@@ -38,13 +38,13 @@ stages:
         backendAzureRmStorageAccountName: 'c9labzstorageaccount'
         backendAzureRmContainerName: 'c9labzterraformcontainer'
         backendAzureRmKey: 'azure-vm-creation-devenv.tfstate'
-     - task: TerraformTaskV4@4
+     - task: TerraformTaskV1@0
        inputs:
          provider: 'azurerm'
          command: 'validate'
          workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
 
-     - task: TerraformTaskV4@4
+     - task: TerraformTaskV1@0
        inputs:
          provider: 'azurerm'
          command: 'plan'
