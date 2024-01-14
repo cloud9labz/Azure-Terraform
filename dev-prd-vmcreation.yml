@@ -46,7 +46,7 @@ stages:
             backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
             backendAzureRmStorageAccountName: 'c9labzstorageaccount'
             backendAzureRmContainerName: 'c9labzterraformcontainer'
-            backendAzureRmKey: 'azure-vm-creation-menv.tfstate'
+            backendAzureRmKey: 'azure-vm-creation-devenv.tfstate'
         - task: TerraformTaskV4@4
           inputs:
             provider: 'azurerm'
@@ -96,7 +96,7 @@ stages:
               backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
               backendAzureRmStorageAccountName: 'c9labzstorageaccount'
               backendAzureRmContainerName: 'c9labzterraformcontainer'
-              backendAzureRmKey: 'azure-vm-creation-menv.tfstate'
+              backendAzureRmKey: 'azure-vm-creation-prdenv.tfstate'
           - task: TerraformTaskV4@4
             inputs:
               provider: 'azurerm'
