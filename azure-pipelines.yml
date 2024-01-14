@@ -55,6 +55,7 @@ stages:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        Options: '-input=false' 
         environmentServiceNameAzureRM: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
     - task: TerraformTaskV4@4
       inputs:
