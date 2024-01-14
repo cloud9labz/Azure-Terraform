@@ -55,7 +55,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'plan'
-        commandOptions: '-var "vm_username=$(windows_vm_username)" -var "vm_password=$(windows_vm_password)" -out=tfplan'
+        commandOptions: '-var "vm_username=$(windows_vm_username)" -var "vm_password=$(windows_vm_password)" -out=tfplan -input=false'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
         environmentServiceNameAzureRM: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
     - task: TerraformTaskV4@4
