@@ -26,12 +26,12 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     variables:
-    - group: terraform-auto-provision-on-dev-environment
+    - group: TF_VAR_GROUP_NAME
     steps:
     - checkout: self
     - script: |
-        GROUP_NAME=$(terraform-auto-provision-on-dev-environment)
-        export terraform-auto-provision-on-dev-environment="$GROUP_NAME"
+        GROUP_NAME=$(TF_VAR_GROUP_NAME)
+        export TF_VAR_GROUP_NAME="$GROUP_NAME"
   - job: TerraformIntsall
     continueOnError: false
     steps:
@@ -57,7 +57,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'plan'
-        commandOptions: '-var "group_name=$terraform-auto-provision-on-dev-environment" -out=tfplan'
+        commandOptions: '-var "group_name=$TF_VAR_GROUP_NAME" -out=tfplan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
         environmentServiceNameAzureRM: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
     - task: TerraformTaskV4@4
