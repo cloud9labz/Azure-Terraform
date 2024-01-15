@@ -72,6 +72,7 @@ variable "ip_config_name" {
 variable "windows_vm_name" {
   description = "Azure Windows VM Name"
   type        = string
+  default = "CLOUDLABWINVM"
 }
 
 variable "windows_vm_size" {
@@ -92,11 +93,13 @@ variable "windows_vm_password" {
 variable "windows_vm_osdisk_caching" {
   description = "Azure Windows VM OS Disk Caching"
   type        = string
+  default = "ReadWrite"
 }
 
 variable "windows_vm_osdisk_storageaccount_type" {
   description = "Azure Windows VM OS Disk Storage Account Type"
   type        = string
+  default = "Standard_LRS"
 }
 
 variable "windows_vm_source_image_publisher" {
