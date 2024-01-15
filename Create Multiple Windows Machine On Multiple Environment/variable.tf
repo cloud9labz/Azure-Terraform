@@ -3,7 +3,7 @@
 variable "node_count" {
   description = "Node Count"
   type        = number
-
+  default = 1
 }
 
 #Azure Subcription Details
@@ -16,12 +16,13 @@ variable "node_count" {
 variable "rg_name" {
   description = "Azure Resource Group Name"
   type        = string
-
+  default = "CLOUDLABZ"
 }
 
 variable "rg_location" {
   description = "Azure Resource Group Location"
   type        = string
+  default = "centralindia"
 
 }
 
