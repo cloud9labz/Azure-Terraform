@@ -1,0 +1,121 @@
+trigger:
+- main
+
+stages:
+- stage: PublishArtifacts
+  jobs:
+  - job: PublishArtifacts
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - checkout: self
+
+    # Your build and other steps go here...
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        artifact: 'TerraformArtifacts'
+        publishLocation: 'pipeline'
+
+- stage: DEV
+  displayName: Create Windows VM on DEV Environment
+  dependsOn: PublishArtifacts
+  jobs:
+  - job: BaseVMImage
+    pool:
+      vmImage: 'ubuntu-latest'
+    variables:
+    - group: terraform-auto-provision-on-dev-environment
+    steps:
+    - checkout: self
+    
+  - job: TerraformIntsall
+    continueOnError: false
+    steps:
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        backendServiceArm: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+        backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
+        backendAzureRmStorageAccountName: 'c9labzstorageaccount'
+        backendAzureRmContainerName: 'c9labzterraformcontainer'
+        backendAzureRmKey: 'win-vm-dev.tfstate'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        commandOptions: '-var "node_count=$(tf_var_node_count)" -var "rg_name=$(tf_var_rg_name)" -var "rg_location=$(tf_var_rg_location)" -var "vnet_name=$(tf_var_vnet_name)" -var "vnet_address_space=$(tf_var_vnet_address_space)" -var "subnet_name=$(tf_var_subnet_name)" -var "subnet_address_prefixes=$(tf_var_subnet_address_prefixes)" -var "publicip_name=$(tf_var_publicip_name)" -var "domain_label_name=$(tf_var_domain_label_name)" -var "network_interface_name=$(tf_var_network_interface_name)" -var "ip_config_name=$(tf_var_ip_config_name)" -var "windows_vm_name=$(tf_var_windows_vm_name)" -var "windows_vm_size=$(tf_var_windows_vm_size)" -var "windows_vm_osdisk_caching=$(tf_var_windows_vm_osdisk_caching)" -var "windows_vm_osdisk_storageaccount_type=$(tf_var_windows_vm_osdisk_storageaccount_type)" -var "windows_vm_source_image_publisher=$(tf_var_windows_vm_source_image_publisher)" -var "windows_vm_source_image_offer=$(tf_var_windows_vm_source_image_offer)" -var "windows_vm_source_image_sku=$(tf_var_windows_vm_source_image_sku)" -var "windows_vm_source_image_version=$(tf_var_windows_vm_source_image_version)" -var "windows_vm_username=$(tf_var_windows_vm_username)" -var "windows_vm_password=$(tf_var_windows_vm_password)" -out=tfplan '
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        environmentServiceNameAzureRM: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        commandOptions: '-auto-approve -input=false tfplan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        environmentServiceNameAzureRM: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+    
+
+- stage: PRD
+  displayName: Create Windows VM on DEV Environment
+  dependsOn: 
+  - PublishArtifacts
+  - DEV
+  jobs:
+  - job: BaseVMImage
+    pool:
+      vmImage: 'ubuntu-latest'
+    variables:
+    - group: terraform-auto-provision-on-prd-environment
+    steps:
+    - checkout: self
+    
+  - job: TerraformIntsall
+    continueOnError: false
+    steps:
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        backendServiceArm: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+        backendAzureRmResourceGroupName: 'C9LABZ-RG1-01'
+        backendAzureRmStorageAccountName: 'c9labzstorageaccount'
+        backendAzureRmContainerName: 'c9labzterraformcontainer'
+        backendAzureRmKey: 'win-vm-prd.tfstate'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        commandOptions: '-var "node_count=$(tf_var_node_count)" -var "rg_name=$(tf_var_rg_name)" -var "rg_location=$(tf_var_rg_location)" -var "vnet_name=$(tf_var_vnet_name)" -var "vnet_address_space=$(tf_var_vnet_address_space)" -var "subnet_name=$(tf_var_subnet_name)" -var "subnet_address_prefixes=$(tf_var_subnet_address_prefixes)" -var "publicip_name=$(tf_var_publicip_name)" -var "domain_label_name=$(tf_var_domain_label_name)" -var "network_interface_name=$(tf_var_network_interface_name)" -var "ip_config_name=$(tf_var_ip_config_name)" -var "windows_vm_name=$(tf_var_windows_vm_name)" -var "windows_vm_size=$(tf_var_windows_vm_size)" -var "windows_vm_osdisk_caching=$(tf_var_windows_vm_osdisk_caching)" -var "windows_vm_osdisk_storageaccount_type=$(tf_var_windows_vm_osdisk_storageaccount_type)" -var "windows_vm_source_image_publisher=$(tf_var_windows_vm_source_image_publisher)" -var "windows_vm_source_image_offer=$(tf_var_windows_vm_source_image_offer)" -var "windows_vm_source_image_sku=$(tf_var_windows_vm_source_image_sku)" -var "windows_vm_source_image_version=$(tf_var_windows_vm_source_image_version)" -var "windows_vm_username=$(tf_var_windows_vm_username)" -var "windows_vm_password=$(tf_var_windows_vm_password)" -out=tfplan '
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        environmentServiceNameAzureRM: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        commandOptions: '-auto-approve -input=false tfplan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
+        environmentServiceNameAzureRM: 'Free Trial(ef31447a-a9ec-499e-b0ae-61e8edbfb86e)'
+    
+
+        
