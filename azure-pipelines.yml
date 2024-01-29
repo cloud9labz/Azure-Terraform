@@ -18,6 +18,7 @@ steps:
     SonarQube: 'azdevops-sonarqube'
     scannerMode: 'CLI'
     configMode: 'file'
+    configFile: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment/sonar-project.properties'
 
 - task: SonarQubeAnalyze@5
   inputs:
