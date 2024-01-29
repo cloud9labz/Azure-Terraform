@@ -16,9 +16,11 @@ steps:
 - task: SonarQubePrepare@5
   inputs:
     SonarQube: 'azdevops-sonarqube'
-    scannerMode: 'MSBuild'
-    projectKey: 'my-terraform-project'
-    projectName: 'azdevops'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'my-terraform-project'
+    cliProjectName: 'azdev'
+    cliSources: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment'
 - task: SonarQubeAnalyze@5
   inputs:
     jdkversion: 'JAVA_HOME_11_X64'
