@@ -16,16 +16,9 @@ steps:
 - task: SonarQubePrepare@5
   inputs:
     SonarQube: 'azdevops-sonarqube'
-    scannerMode: 'CLI'
-    configMode: 'file'
-    configFile: '$(System.DefaultWorkingDirectory)/Create Multiple Windows Machine On Multiple Environment/sonar-project.properties'
-    extraProperties: |
-      # Additional properties that will be passed to the scanner, 
-      # Put one key=value per line, example:
-      # sonar.exclusions=**/*.bin
-      
-      $params = "$env:SONARQUBE_SCANNER_PARAMS" -replace '"sonar.branch.name":"[\w,/,-]*"\,?'
-      Write-Host "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$params"
+    scannerMode: 'MSBuild'
+    projectKey: 'my-terraform-project'
+    projectName: 'azdevops'
 - task: SonarQubeAnalyze@5
   inputs:
     jdkversion: 'JAVA_HOME_11_X64'
