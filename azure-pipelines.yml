@@ -1,0 +1,29 @@
+trigger:
+- '*'
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: 'azdevops-sonarqube'
+    scannerMode: 'CLI'
+    configMode: 'file'
+
+- task: SonarQubeAnalyze@5
+  inputs:
+    jdkversion: 'JAVA_HOME_11_X64'
+
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
+
